@@ -46,6 +46,15 @@ RUN conda env create -f /tmp/environment.yml && \
     echo "conda activate biotools" >> /home/rstudio/.profile  \
     rm -rf environments
 
+
+# install requirements
+COPY requirements.txt requirements.txt 
+COPY StochPy-2.4-py3-none-any.whl StochPy-2.4-py3-none-any.whl
+
+RUN /opt/conda/envs/biotools/bin/python -m pip install -r /tmp/requirements.txt && \ 
+    /opt/conda/envs/biotools/bin/python -m pip install /tmp/StochPy-2.4-py3-none-any.whl && \
+    /opt/conda/envs/biotools/bin/python -m ipykernel install --prefix=/opt/conda/envs/biotools/ --name biotools 
+    
 # Install the renv package and install packages from lockfile
 RUN R -e "install.packages('remotes', repos = c(CRAN = 'https://cloud.r-project.org'))" && \
     R -e "remotes::install_github('rstudio/renv@${RENV_VERSION}')"
@@ -65,5 +74,3 @@ RUN mkdir -p /renv/cache && \
     chown -R rstudio:rstudio /renv/  && \
     chown -R rstudio:rstudio /home/rstudio/project 
 
-
-RUN /opt/conda/envs/biotools/bin/python -m ipykernel install --prefix=/opt/conda/envs/biotools/ --name biotools

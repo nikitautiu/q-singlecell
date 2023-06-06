@@ -6,7 +6,7 @@ services:
     build:
       context: .
     volumes:
-      - '.:/home/rstudio/project/:Z'
+      - '.:/home/rstudio/project/:z'
     ports:
       - "8888:8888"
     entrypoint: bash -c '. /opt/conda/etc/profile.d/conda.sh && conda activate biotools && jupyter lab --ip=0.0.0.0 --notebook-dir=/home/rstudio --port=8888 --no-browser --allow-root'
@@ -14,10 +14,10 @@ services:
   rstudio-dev:
     image: compute_environemnt
     volumes:
-        - '.:/home/rstudio/project/:Z'
-        - './renv/cache:/renv/cache/:Z'
+        - '.:/home/rstudio/project/:z'
+        - './renv/cache:/renv/cache/'
           #     - './renv/root:/renv/root/'
-        - './R.cache:/home/rstudio/.cache/R/R.cache:Z'
+        - './R.cache:/home/rstudio/.cache/R/R.cache'
     ports:
       - "8787:8787"
     environment:

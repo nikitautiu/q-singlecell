@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  jupyter-notebook:
+    image: compute_environemnt
+    build:
+      context: .
+    volumes:
+      - '.:/home/rstudio/project/:Z'
+    ports:
+      - "8888:8888"
+    entrypoint: bash -c '. /opt/conda/etc/profile.d/conda.sh && conda activate biotools && jupyter lab --ip=0.0.0.0 --notebook-dir=/home/rstudio --port=8888 --no-browser --allow-root'
+  
+  rstudio-dev:
+    image: compute_environemnt
+    volumes:
+        - '.:/home/rstudio/project/:Z'
+        - './renv/cache:/renv/cache/:Z'
+          #     - './renv/root:/renv/root/'
+        - './R.cache:/home/rstudio/.cache/R/R.cache:Z'
+    ports:
+      - "8787:8787"
+    environment:
+      #  - 'DISABLE_AUTH=true'
+      - 'PASSWORD=pass'
+    # entrypoint: sh -c 'cd /home/rstudio/project && R -e "renv::restore()" && /init'
+    # entrypoint: sh -c 'cd /home/rstudio/project && R -e "renv::restore()" && /init'
+
+
+
